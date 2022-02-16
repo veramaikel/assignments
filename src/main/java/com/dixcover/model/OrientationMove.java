@@ -1,4 +1,4 @@
-package project0.dixcover;
+package com.dixcover.model;
 
 public enum OrientationMove {
     HORIZONTAL('R'), VERTICAL('C'), BOTH('B');

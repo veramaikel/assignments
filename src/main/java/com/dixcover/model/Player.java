@@ -1,25 +1,32 @@
-package project0.dixcover;
+package com.dixcover.model;
 
-import project0.dixcover.structures.DixcoverStack;
+import com.dixcover.util.DixcoverDeque;
+import org.jetbrains.annotations.NotNull;
 
 public class Player {
+    private Integer id;
     private int bomb;
     private int superbomb;
-    private DixcoverStack<Move> moveStack;
+    private DixcoverDeque<Move> moves;
     private String name;
+    private boolean human;
+    private boolean winner;
 
     public Player(String name){
-        this(name, 0, 0);
+        this(name, null, 0, 0, true, false);
     }
 
-    public Player(String name, int bomb, int superbomb) {
+    public Player(String name, Integer id, int bomb, int superbomb, boolean human, boolean winner) {
         this.bomb = bomb;
         this.superbomb = superbomb;
         this.name = name;
-        moveStack = new DixcoverStack<Move>();
+        this.id = id;
+        this.human = human;
+        this.winner = winner;
+        moves = new DixcoverDeque<Move>();
     }
 
-    public void addMove(Move move){
+    public void addMove(@NotNull Move move){
         if(move.hasBomb()){
             if(move.getOrientation().equals(OrientationMove.BOTH) && move.getSense().equals(SenseMove.BOTH)){
                 removeSuperbomb();
@@ -28,11 +35,11 @@ public class Player {
         else {
             removeBomb();
         }
-        moveStack.push(move);
+        moves.push(move);
     }
 
     public Move reverseMove(){
-        Move move = moveStack.pop();
+        Move move = moves.pop();
         if(move.hasBomb()){
             if(move.getOrientation().equals(OrientationMove.BOTH) && move.getSense().equals(SenseMove.BOTH)){
                 addSuperbomb();
@@ -70,6 +77,10 @@ public class Player {
         if(this.superbomb<0) this.superbomb = 0;
     }
 
+    public Integer getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
     public String getName() {
         return name;
     }
@@ -78,14 +89,28 @@ public class Player {
         this.name = name;
     }
 
+    public boolean isHuman() { return human; }
+
+    public void setHuman(boolean human) { this.human = human; }
+
     @java.lang.Override
     public String toString() {
 
-        StringBuffer r = new StringBuffer("Player{name="+this.name);
+        StringBuffer r = new StringBuffer("Player{name="+this.name+"("+this.id+")");
                 r.append(", bomb=" + bomb)
                         .append(", superbomb=" + superbomb)
-                        .append(", " + moveStack.toString())
+                        .append(", human=" + human)
+                        .append(", winner=" + human)
+                        .append(", " + moves.toString())
                         .append("}");
+        return r.toString();
+    }
+
+    public String toStr() {
+        StringBuffer r = new StringBuffer("Player{name="+this.name+"("+this.id+")");
+               r.append(", bomb=" + bomb)
+                .append(", superbomb=" + superbomb)
+                .append(", human=" + human+"}");
         return r.toString();
     }
 }

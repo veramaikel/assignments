@@ -1,4 +1,4 @@
-package project0.dixcover;
+package com.dixcover.model;
 
 public class Position {
     private int row;

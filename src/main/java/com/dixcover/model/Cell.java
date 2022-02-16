@@ -1,10 +1,10 @@
-package project0.dixcover;
+package com.dixcover.model;
 
 public class Cell extends Position {
     private CellType type;
     private boolean hidden;
 
-    Cell(int row, int col){
+    public Cell(int row, int col){
         this(row, col, CellType.EMPTY, true);
     }
 

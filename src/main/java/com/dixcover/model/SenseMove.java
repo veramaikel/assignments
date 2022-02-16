@@ -1,4 +1,4 @@
-package project0.dixcover;
+package com.dixcover.model;
 
 public enum SenseMove {
     FORWARD('F'), BACKWARD('K'), BOTH('B');
