@@ -1,9 +1,9 @@
-package com.dixcover.model;
+package com.maximize.model;
 
 public enum SenseMove {
     FORWARD('F'), BACKWARD('K'), BOTH('B');
 
-    private char value;
+    private final char value;
 
     SenseMove(char value){
         this.value = value;

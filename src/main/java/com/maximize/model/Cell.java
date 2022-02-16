@@ -1,4 +1,4 @@
-package com.dixcover.model;
+package com.maximize.model;
 
 public class Cell extends Position {
     private CellType type;

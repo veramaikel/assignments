@@ -1,4 +1,4 @@
-package com.dixcover.model;
+package com.maximize.model;
 
 public class Position {
     private int row;

@@ -1,16 +1,16 @@
-package com.dixcover.util;
+package com.maximize.util;
 
-public class DixcoverDeque<T> {
+public class MaximizeDeque<T> {
 
     private int last; //the index of the last element
     private T[] array;
     private int defaultStep;
 
-    public DixcoverDeque(){
+    public MaximizeDeque(){
         this(10);
     }
 
-    public DixcoverDeque(int size){
+    public MaximizeDeque(int size){
         if(size<1)  this.defaultStep = 10;
         else this.defaultStep = size;
 
@@ -156,15 +156,15 @@ public class DixcoverDeque<T> {
     @java.lang.Override
     public String toString() {
 
-        StringBuffer r = new StringBuffer("DixcoverDeque{");
-        if(last>-1) r.append(array[0].getClass()+", ");
-        r.append("size=" + (last+1))
-                .append(", length=" + array.length)
-                .append(", defaultStep=" + defaultStep)
+        StringBuffer r = new StringBuffer("MaximizeDeque{");
+        if(last>-1) r.append(array[0].getClass()).append(", ");
+        r.append("size=").append(last + 1)
+                .append(", length=").append(array.length)
+                .append(", defaultStep=").append(defaultStep)
                 .append(", elements=[");
         for (int i = last; i <= 0; i--) {
             if(i<last) r.append(", ");
-            r.append(array[i].toString());
+            r.append(array[i]);
         }
         return r.append("] }").toString();
     }

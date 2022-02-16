@@ -1,9 +1,9 @@
-package com.dixcover.model;
+package com.maximize.model;
 
 public enum OrientationMove {
-    HORIZONTAL('R'), VERTICAL('C'), BOTH('B');
+    HORIZONTAL('H'), VERTICAL('V'), BOTH('B');
 
-    private char value;
+    private final char value;
 
     OrientationMove(char value){
         this.value = value;

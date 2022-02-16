@@ -1,14 +1,12 @@
-package com.dixcover.model;
+package com.maximize.model;
 
 public class Move extends Position {
     OrientationMove orientation;
     SenseMove sense;
-    boolean hasBomb;
     Player player;
 
-    Move(int row, int col, Player player, OrientationMove orientation, SenseMove sense, boolean hasBomb){
+    Move(int row, int col, Player player, OrientationMove orientation, SenseMove sense){
         super(row, col);
-        this.hasBomb = hasBomb;
         this.orientation = orientation;
         this.sense = sense;
         this.player = player;
@@ -32,13 +30,5 @@ public class Move extends Position {
 
     public void setSense(SenseMove sense) {
         this.sense = sense;
-    }
-
-    public boolean hasBomb() {
-        return hasBomb;
-    }
-
-    public void setHasBomb(boolean hasBomb) {
-        this.hasBomb = hasBomb;
     }
 }
