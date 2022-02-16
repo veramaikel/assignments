@@ -5,9 +5,9 @@ public enum CellType {
     OBSTACLE('O'), PLAYAGAIN('+'),
     BOMB('*'), SUPERBOMB('#');
 
-    private char value;
+    private final char value;
 
-    private CellType(char value){
+    CellType(char value){
         this.value = value;
     }
 

@@ -3,7 +3,7 @@ package com.dixcover.model;
 public enum OrientationMove {
     HORIZONTAL('R'), VERTICAL('C'), BOTH('B');
 
-    private char value;
+    private final char value;
 
     OrientationMove(char value){
         this.value = value;
