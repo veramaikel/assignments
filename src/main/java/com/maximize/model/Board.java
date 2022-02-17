@@ -1,15 +1,17 @@
 package com.maximize.model;
 
-import com.maximize.util.MaximizeDeque;
+import com.maximize.util.MaximizeStack;
+import org.apache.log4j.Logger;
 
 import java.util.Random;
 
 public class Board {
+    private static final Logger log = Logger.getLogger(Board.class);
     public static final int MAX_DIM = 50;
     private Integer id;
     private Cell[][] matrix;
     private int rows, columns;
-    private MaximizeDeque<Cell[][]> changes;
+    private MaximizeStack<Cell[][]> changes;
 
     public Board(int rows, int columns){ this(rows, columns, null, null); }
 
@@ -19,7 +21,7 @@ public class Board {
         this.rows = Math.min(rows, MAX_DIM);
         this.columns = Math.min(columns, MAX_DIM);
         this.id = id;
-        this.changes = new MaximizeDeque<>();
+        this.changes = new MaximizeStack<>();
         if(matrixTex==null){
             this.matrix = new Cell[rows][columns];
             generate();
@@ -78,19 +80,20 @@ public class Board {
 
     private void generate() {
         Random rand = new Random();
-        int refnumber = rows*columns;
-        int points = refnumber*30/100;
-        int duplex = refnumber*10/100;
-        int stops = refnumber*7/100;
-        int plus = refnumber*10/100;
-        int empty = refnumber - (points+duplex+stops+plus+2);
+        int total = rows*columns;
+        int points = total*30/100;
+        int duplex = total*10/100;
+        int stops = total*7/100;
+        int plus = total*10/100;
+        int zero = 2;
+        int empty = total - (points+duplex+stops+plus+zero);
 
-        int[] cells = new int[refnumber];
-        for (int i = 0; i < refnumber; i++) {
+        int[] cells = new int[total];
+        for (int i = 0; i < total; i++) {
             cells[i] = 1;
         }
 
-        int[] density = {empty/8, points/3, 0, 2, 0, duplex, 0, 0, 0, stops, 0, plus, 0, 0, 0};
+        int[] density = {empty/8, points/3, 0, zero, 0, duplex, 0, 0, 0, stops, 0, plus, 0, 0, 0};
         empty = empty - density[0];
         points = points - density[1];
         density[2] = empty/7;
@@ -112,14 +115,14 @@ public class Board {
                 CellType.EMPTY, CellType.DUPLEX, CellType.EMPTY, CellType.POINT, CellType.EMPTY,
                 CellType.STOP, CellType.EMPTY, CellType.PLUS, CellType.EMPTY, CellType.POINT, CellType.EMPTY };
 
-        for (int i = 0; i < refnumber; i++) {
+        for (int i = 0; i < total; i++) {
             int dindex, cindex;
             do {
-                cindex = (int) (Math.random()*refnumber); //rand.nextInt(cells.length);
+                cindex = (int) (Math.random()*total); //rand.nextInt(cells.length);
                 dindex = (int) (Math.random()*density.length); //rand.nextInt(density.length);
             }
             while(density[dindex]==0 || cells[cindex]==0);
-            int r = cindex/rows;
+            int r = cindex/columns;
             int c = cindex%columns;
             Cell cell = new Cell(r, c);
             cell.setType(types[dindex]);
@@ -130,16 +133,30 @@ public class Board {
     }
 
     public void print(boolean showAll) {
-        System.out.println();
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                Cell cell = this.matrix[i][j];
-                if(showAll || !cell.isHidden()) System.out.print(cell.getType().getValue()+" ");
-                else System.out.print(CellWrapper.HIDDEN.getValue()+" ");
-            }
-            System.out.println();
+        StringBuilder s = new StringBuilder("\n\t");
+        for (int i = 0; i <= columns; i++) {
+            if(i==columns) s.append(" y");
+            else s.append("  ");
         }
-
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j <= columns; j++) {
+                if(j==columns){
+                    s.append(i+1).append(" ");
+                }
+                else {
+                    Cell cell = this.matrix[i][j];
+                    if (showAll || !cell.isHidden()) s.append(cell.getType().getValue()).append(" ");
+                    else s.append(CellWrapper.HIDDEN.getValue()).append(" ");
+                }
+            }
+            s.append("\n\t");
+        }
+        s.append("\n\t");
+        for (int i = 0; i <= columns; i++) {
+            if(i==columns) s.append(" x");
+            else s.append(i+1).append(" ");
+        }
+        System.out.println(s);
     }
 
     public void play(Move move){
@@ -149,5 +166,21 @@ public class Board {
 
     public void reverse(){
         if(!changes.empty()) { this.matrix = changes.pop();}
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 }

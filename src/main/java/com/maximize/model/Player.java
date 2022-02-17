@@ -1,24 +1,26 @@
 package com.maximize.model;
 
-import com.maximize.util.MaximizeDeque;
+import com.maximize.util.MaximizeStack;
+
+import java.util.Objects;
 
 public class Player {
     private Integer id;
     private int points;
-    private MaximizeDeque<Move> moves;
+    private MaximizeStack<Move> moves;
     private String name;
     private boolean human;
 
     public Player(String name){
-        this(name, null, 0, true);
+        this(name, null, true);
     }
 
-    public Player(String name, Integer id, int points, boolean human) {
-        this.points = points;
+    public Player(String name, Integer id, boolean human) {
+        this.points = 0;
         this.name = name;
         this.id = id;
         this.human = human;
-        moves = new MaximizeDeque<>();
+        moves = new MaximizeStack<>();
     }
 
     public void addMove(Move move){
@@ -63,8 +65,21 @@ public class Player {
 
     public void setHuman(boolean human) { this.human = human; }
 
-    @java.lang.Override
-    public String toString() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+        Player player = (Player) o;
+        return human == player.human && id.equals(player.id) && name.equals(player.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, human);
+    }
+
+
+    public String toStr() {
 
         return "Player{name=" + this.name + "(" + this.id + ")" + ", points=" + points +
                 ", human=" + human +
@@ -72,7 +87,8 @@ public class Player {
                 "}";
     }
 
-    public String toStr() {
+    @java.lang.Override
+    public String toString() {
         return "Player{name=" + this.name + "(" + this.id + ")" + ", points=" + points + ", human=" + human + "}";
     }
 }

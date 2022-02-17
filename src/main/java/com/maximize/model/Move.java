@@ -1,14 +1,12 @@
 package com.maximize.model;
 
 public class Move extends Position {
-    OrientationMove orientation;
-    SenseMove sense;
+    DirectionMove direction;
     Player player;
 
-    Move(int row, int col, Player player, OrientationMove orientation, SenseMove sense){
+    Move(int row, int col, Player player, DirectionMove direction){
         super(row, col);
-        this.orientation = orientation;
-        this.sense = sense;
+        this.direction = direction;
         this.player = player;
     }
 
@@ -16,19 +14,16 @@ public class Move extends Position {
 
     public void setPlayer(Player player) { this.player = player; }
 
-    public OrientationMove getOrientation() {
-        return orientation;
+    public DirectionMove getDirection() {
+        return direction;
     }
 
-    public void setOrientation(OrientationMove orientation) {
-        this.orientation = orientation;
+    public void setDirection(DirectionMove direction) {
+        this.direction = direction;
     }
 
-    public SenseMove getSense() {
-        return sense;
-    }
-
-    public void setSense(SenseMove sense) {
-        this.sense = sense;
+    @java.lang.Override
+    public String toString() {
+        return "Move{row=" + getRow() + ", col=" + getColumn() + ", direction=" + direction.name() + "}";
     }
 }

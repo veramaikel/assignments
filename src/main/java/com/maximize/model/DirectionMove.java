@@ -1,11 +1,11 @@
 package com.maximize.model;
 
-public enum SenseMove {
-    FORWARD('F'), BACKWARD('K'), BOTH('B');
+public enum DirectionMove {
+    UP('U'), DOWN('D'), LEFT('L'), RIGHT('R');
 
     private final char value;
 
-    SenseMove(char value){
+    DirectionMove(char value){
         this.value = value;
     }
 

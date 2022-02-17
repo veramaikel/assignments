@@ -9,6 +9,7 @@ CREATE TABLE game(
    start_date DATETIME NOT NULL,
    update_date DATETIME NOT NULL
 );
+CREATE UNIQUE INDEX gameName ON game (name);
 
 CREATE TABLE board(
    id_game int PRIMARY KEY,
@@ -21,7 +22,7 @@ CREATE TABLE player(
    name varchar(40) NOT NULL,
    human BIT DEFAULT 1 NOT NULL
 );
-CREATE INDEX playerName ON player (name);
+CREATE UNIQUE INDEX playerName ON player (name);
 
 CREATE TABLE playing(
    id_game int NOT NULL,
