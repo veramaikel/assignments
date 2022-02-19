@@ -41,6 +41,10 @@ public class Player {
         if(this.points <0) this.points = 0;
     }
 
+    public void zeroPoints() {
+        this.points = 0;
+    }
+
     public void duplexPoints() {
         this.points = this.points * 2;
     }
@@ -65,12 +69,16 @@ public class Player {
 
     public void setHuman(boolean human) { this.human = human; }
 
+    public int getActualMoves(){
+        return this.moves.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Player)) return false;
         Player player = (Player) o;
-        return human == player.human && id.equals(player.id) && name.equals(player.name);
+        return id.equals(player.id) && name.equals(player.name);
     }
 
     @Override

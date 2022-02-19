@@ -1,6 +1,6 @@
 package com.maximize.util;
 
-public abstract class MaximizeDeque<T> {
+public abstract class MaximizeDeque<T> implements Iterable<T> {
 
     private int last; //the index of the last element in array
     private T[] array;

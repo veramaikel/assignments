@@ -1,5 +1,7 @@
 package com.maximize.util;
 
+import java.util.Iterator;
+
 public class MaximizeQueue<T> extends MaximizeDeque {
 
     private int last; //the index of the last element in array
@@ -97,5 +99,10 @@ public class MaximizeQueue<T> extends MaximizeDeque {
             r.append(array[i]);
         }
         return r.append("] }").toString();
+    }
+
+    @Override
+    public Iterator iterator() {
+        return null;
     }
 }

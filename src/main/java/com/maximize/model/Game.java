@@ -9,22 +9,24 @@ public class Game {
     private static final Logger log = Logger.getLogger(Game.class);
     private Integer id;
     private String name;
-    private Date star;
+    private final Date star;
     private Date update;
     private Board board;
     private MaximizeLinkedList<Player> players;
+    private boolean over;
 
     public Game(String name){
-        this(name, null, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+        this(name, null, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()),false);
     }
 
-    public Game(String name, Integer id, Date star, Date update){
+    public Game(String name, Integer id, Date star, Date update, boolean over){
         this.name = name;
         this.id = id;
         this.star = star;
         this.update = update;
         players = new MaximizeLinkedList<>();
         board = null;
+        this.over = over;
     }
 
     public Integer getId() {
@@ -45,6 +47,14 @@ public class Game {
 
     public Date getStar() {
         return star;
+    }
+
+    public boolean isOver() {
+        return over;
+    }
+
+    public void setOver(boolean over) {
+        this.over = over;
     }
 
     public Date getUpdate() {
@@ -76,21 +86,37 @@ public class Game {
         this.players.add(p);
     }
 
+    /**
+     *
+     * @return the player whose turn it is to move
+     */
     public Player getPlayer() {
         return this.players.getHead();
     }
 
+    /**
+     *
+     * @return the next player whose turn it is to move
+     */
     public Player nextPlayer() {
         return this.players.next();
     }
 
+    /**
+     * Set the player at the head of the list
+     * @param p Player
+     */
     public void setPlayer(Player p){
         this.players.setHead(p);
     }
 
-    public void setHead(Player p){
-        int index = this.players.search(p);
-        this.players.setHeadIndex(index);
+    /**
+     *
+     * @param p
+     * @return true if the player p is the player in the head
+     */
+    public boolean isHead(Player p){
+        return this.players.isHead(p);
     }
 
     public void setPlayers(MaximizeLinkedList<Player> list){
@@ -103,6 +129,8 @@ public class Game {
                 "name(id)=" +name+ "("+ id + ")"+
                 ", star=" + star +
                 ", update=" + update +
+                ", over=" + over +
+                ", board=" + board +
                 ", players=" + players +
                 '}';
     }
