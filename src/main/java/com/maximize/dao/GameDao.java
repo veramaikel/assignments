@@ -11,9 +11,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class gameDAO {
-    private static final Logger log = Logger.getLogger(gameDAO.class);
-    private static Connection conn = ConnectionUtil.getConnection();
+public class GameDao {
+    private static final Logger log = Logger.getLogger(GameDao.class);
+    private Connection conn;
+
+    public GameDao(){
+        conn = ConnectionUtil.getConnection();
+    }
 
     public List<Game> getAllGames() throws SQLException {
         List<Game> allGames = new ArrayList<Game>();
@@ -21,7 +25,8 @@ public class gameDAO {
         ResultSet rs = statement.executeQuery("Select * From Game");
         while(rs.next()){
             Game nextGame = new Game(rs.getString("name"),rs.getInt("id"),
-                    rs.getDate("start_date"), rs.getDate("update_date"));
+                    rs.getDate("start_date"), rs.getDate("update_date"),
+                    rs.getBoolean("gameover"));
             allGames.add(nextGame);
         }
         rs.close();
@@ -35,11 +40,12 @@ public class gameDAO {
         ResultSet rs = statement.executeQuery();
         while(rs.next()){
             myGame = new Game(rs.getString("name"),rs.getInt("id"),
-                    rs.getDate("start_date"), rs.getDate("update_date"));
+                    rs.getDate("start_date"), rs.getDate("update_date"),
+                    rs.getBoolean("gameover"));
         }
         if(myGame!=null) {
             myGame.setBoard(this.getBoard(myGame.getId()));
-            myGame.setPlayers(this.getPlayers(myGame.getId()));
+            myGame.setPlayers(this.getPlayersByGame(myGame.getId()));
         }
         rs.close();
         return myGame;
@@ -52,11 +58,12 @@ public class gameDAO {
         ResultSet rs = statement.executeQuery();
         while(rs.next()){
             myGame = new Game(rs.getString("name"),rs.getInt("id"),
-                    rs.getDate("start_date"), rs.getDate("update_date"));
+                    rs.getDate("start_date"), rs.getDate("update_date"),
+                    rs.getBoolean("gameover"));
         }
         if(myGame!=null) {
             myGame.setBoard(this.getBoard(myGame.getId()));
-            myGame.setPlayers(this.getPlayers(myGame.getId()));
+            myGame.setPlayers(this.getPlayersByGame(myGame.getId()));
         }
         rs.close();
         return myGame;
@@ -64,13 +71,14 @@ public class gameDAO {
 
     public Game add(Game G) throws SQLException {
         PreparedStatement statement = conn.prepareStatement(
-                "Insert into Game (name, start_date, update_date)" +
+                "Insert into Game (name, start_date, update_date, gameover) " +
                         "Values" +
-                        "(?,?,?)",Statement.RETURN_GENERATED_KEYS);
+                        "(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
         int parameterIndex = 0;
         statement.setString(++parameterIndex, G.getName());
         statement.setDate(++parameterIndex, G.getStar());
         statement.setDate(++parameterIndex, G.getUpdate());
+        statement.setBoolean(++parameterIndex, G.isOver());
         conn.setAutoCommit(false);
             if(statement.executeUpdate()>0) {
                 ResultSet rs = statement.getGeneratedKeys();
@@ -96,9 +104,11 @@ public class gameDAO {
     }
 
     public Game update(Game G) throws SQLException {
-        PreparedStatement statement = conn.prepareStatement("UPDATE Game SET update_date = ? Where id = ?");
+        PreparedStatement statement = conn.prepareStatement(
+                "UPDATE Game SET update_date = ?, gameover = ? Where id = ?");
         int parameterIndex = 0;
         statement.setDate(++parameterIndex, G.getUpdate());
+        statement.setBoolean(++parameterIndex, G.isOver());
         statement.setInt(++parameterIndex, G.getId());
         conn.setAutoCommit(false);
         if(statement.executeUpdate()>0) {
@@ -133,9 +143,7 @@ public class gameDAO {
 
     private void addBoard(Board B) throws SQLException {
         PreparedStatement statement = conn.prepareStatement(
-                "Insert into Board (id_game, matrix)" +
-                        "Values" +
-                        "(?,?)");
+                "Insert into Board (id_game, matrix) Values (?,?)");
         int parameterIndex = 0;
         statement.setInt(++parameterIndex, B.getId());
         statement.setString(++parameterIndex, B.wrapper());
@@ -143,14 +151,14 @@ public class gameDAO {
     }
 
     private void updateBoard(Board B) throws SQLException {
-        PreparedStatement statement = conn.prepareStatement("UPDATE Game SET matrix = ? Where id_game = ?");
+        PreparedStatement statement = conn.prepareStatement("UPDATE Board SET matrix = ? Where id_game = ?");
         int parameterIndex = 0;
         statement.setString(++parameterIndex, B.wrapper());
         statement.setInt(++parameterIndex, B.getId());
         statement.executeUpdate();
     }
 
-    private MaximizeLinkedList<Player> getPlayers(Integer id) throws SQLException {
+    private MaximizeLinkedList<Player> getPlayersByGame(Integer id) throws SQLException {
         MaximizeLinkedList<Player> myPlayers = new MaximizeLinkedList<>();
         String sql = "Select P.*, G.* "
                 + "From Player P Inner Join Playing G on P.id = G.id_player "
@@ -162,10 +170,10 @@ public class gameDAO {
         int rsIndex = -1;
         while(rs.next()){
             rsIndex++;
-            Player P =new Player(rs.getString("P.name"),
-                    rs.getInt("P.id"), rs.getBoolean("P.human"));
-            P.addPoints(rs.getInt("G.points"));
-            if(rs.getBoolean("G.turn") && head<0) head = rsIndex;
+            Player P =new Player(rs.getString("name"),
+                    rs.getInt("id_player"), rs.getBoolean("human"));
+            P.addPoints(rs.getInt("points"));
+            if(rs.getBoolean("turn") && head<0) head = rsIndex;
             myPlayers.add(P);
         }
         myPlayers.setHeadIndex(head);
@@ -188,7 +196,7 @@ public class gameDAO {
 
     private void updatePlaying(Integer id, Player P, boolean turn) throws SQLException {
         PreparedStatement statement = conn.prepareStatement(
-                "Update Playing SET turn = ?, points = ? Where id_game = ? AND id_player = ?)");
+                "Update Playing SET turn = ?, points = ? Where id_game = ? AND id_player = ?");
         int parameterIndex = 0;
         statement.setBoolean(++parameterIndex, turn);
         statement.setInt(++parameterIndex, P.getPoints());

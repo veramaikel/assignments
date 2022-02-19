@@ -65,12 +65,15 @@ public class Player {
 
     public void setHuman(boolean human) { this.human = human; }
 
+    public int getActualMoves(){
+        return this.moves.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Player)) return false;
-        Player player = (Player) o;
-        return human == player.human && id.equals(player.id) && name.equals(player.name);
+        if (!(o instanceof Player player)) return false;
+        return id.equals(player.id) && name.equals(player.name);
     }
 
     @Override

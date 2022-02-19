@@ -1,6 +1,8 @@
 package com.maximize.util;
 
-public class MaximizeLinkedList<T> extends MaximizeDeque {
+import java.util.Iterator;
+
+public class MaximizeLinkedList<T> extends MaximizeDeque<T> {
 
     private int last; //the index of the last element in array
     private T[] array;
@@ -121,6 +123,11 @@ public class MaximizeLinkedList<T> extends MaximizeDeque {
         return null;
     }
 
+    public boolean isHead(T t){
+        if(head > -1) return (array[head].equals(t));
+        return false;
+    }
+
     public void set(int index, T t){
         if(index>-1 && index<=last) array[index] = t;
     }
@@ -131,6 +138,30 @@ public class MaximizeLinkedList<T> extends MaximizeDeque {
 
     public int size(){
         return (this.last+1);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+
+        return new Iterator<T>() {
+
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return index <= last;
+            }
+
+            @Override
+            public T next() {
+                return array[index++];
+            }
+
+            @Override
+            public void remove() { // Not implemented
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     @Override

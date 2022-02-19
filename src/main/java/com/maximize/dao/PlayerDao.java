@@ -2,16 +2,19 @@ package com.maximize.dao;
 
 import com.maximize.model.Player;
 import com.maximize.util.ConnectionUtil;
-import com.maximize.util.MaximizeLinkedList;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class playerDAO {
-    private static final Logger log = Logger.getLogger(playerDAO.class);
-    private static Connection conn = ConnectionUtil.getConnection();
+public class PlayerDao {
+    private static final Logger log = Logger.getLogger(PlayerDao.class);
+    private Connection conn;
+
+    public PlayerDao(){
+        conn = ConnectionUtil.getConnection();
+    }
 
     public List<Player> getAllPlayers() throws SQLException {
         List<Player> allPlayers = new ArrayList<>();
@@ -41,7 +44,7 @@ public class playerDAO {
 
     public Player get(String name) throws SQLException {
         Player myPlayer = null;
-        PreparedStatement statement = conn.prepareStatement("Select * From Game Where name = ?");
+        PreparedStatement statement = conn.prepareStatement("Select * From Player Where name = ?");
         statement.setString(1, name);
         ResultSet rs = statement.executeQuery();
         while(rs.next()){
@@ -69,6 +72,17 @@ public class playerDAO {
             rs.close();
         }
         return P;
+    }
+
+    public boolean update(Player P) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement("Update Player Set name = ?, human = ? Where id = ?");
+        int parameterIndex = 0;
+        statement.setString(++parameterIndex, P.getName());
+        statement.setBoolean(++parameterIndex, P.isHuman());
+        statement.setInt(++parameterIndex, P.getId());
+        statement.executeUpdate();
+        log.debug("Player Updated ID = " + P.getId());
+        return true;
     }
 
 }

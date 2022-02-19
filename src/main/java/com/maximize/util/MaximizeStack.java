@@ -1,5 +1,7 @@
 package com.maximize.util;
 
+import java.util.Iterator;
+
 public class MaximizeStack<T> extends MaximizeDeque {
 
     private int last; //the index of the last element in array
@@ -67,6 +69,14 @@ public class MaximizeStack<T> extends MaximizeDeque {
         last++;
     }
 
+    public boolean empty(){
+        return (last==-1);
+    }
+
+    public int size(){
+        return (this.last+1);
+    }
+
     @Override
     public String toString() {
 
@@ -80,5 +90,10 @@ public class MaximizeStack<T> extends MaximizeDeque {
             r.append(array[i]);
         }
         return r.append("] }").toString();
+    }
+
+    @Override
+    public Iterator iterator() {
+        return null;
     }
 }

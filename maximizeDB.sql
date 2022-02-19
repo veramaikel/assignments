@@ -7,7 +7,8 @@ CREATE TABLE game(
    id int IDENTITY(1,1) PRIMARY KEY,
    name varchar(40) NOT NULL,
    start_date DATETIME NOT NULL,
-   update_date DATETIME NOT NULL
+   update_date DATETIME NOT NULL,
+   gameover BIT DEFAULT 0 NOT NULL
 );
 CREATE UNIQUE INDEX gameName ON game (name);
 
