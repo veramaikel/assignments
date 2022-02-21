@@ -13,14 +13,14 @@ import java.util.List;
 
 public class GameDao {
     private static final Logger log = Logger.getLogger(GameDao.class);
-    private Connection conn;
+    private final Connection conn;
 
     public GameDao(){
         conn = ConnectionUtil.getConnection();
     }
 
     public List<Game> getAllGames() throws SQLException {
-        List<Game> allGames = new ArrayList<Game>();
+        List<Game> allGames = new ArrayList<>();
         Statement statement = conn.createStatement();
         ResultSet rs = statement.executeQuery("Select * From Game");
         while(rs.next()){
@@ -103,7 +103,7 @@ public class GameDao {
         return G;
     }
 
-    public Game update(Game G) throws SQLException {
+    public void update(Game G) throws SQLException {
         PreparedStatement statement = conn.prepareStatement(
                 "UPDATE Game SET update_date = ?, gameover = ? Where id = ?");
         int parameterIndex = 0;
@@ -125,7 +125,6 @@ public class GameDao {
             conn.commit();
         }
         conn.setAutoCommit(true);
-        return G;
     }
 
     private Board getBoard(Integer id) throws SQLException {
