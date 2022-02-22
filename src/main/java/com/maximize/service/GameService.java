@@ -166,10 +166,13 @@ public class GameService {
 
     public Game afterMove(Game G){
         if((G.getBoard().getPositiveCells()>0 || G.getBoard().getZeroCells()>0) && !G.isOver()){
-            List<String> list = new ArrayList<>(2);
-            list.add("Continue Game");
-            list.add("Reverse the Play");
-            int opt = consoleServ.getIntByList("Select Option to continue: ", list, null);
+            int opt = 1;
+            if(G.getPlayer().isHuman()) {
+                List<String> list = new ArrayList<>(2);
+                list.add("Continue Game");
+                list.add("Reverse the Play");
+                opt = consoleServ.getIntByList("Select Option to continue: ", list, null);
+            }
             if (opt == 2){
                 G.reversePlay();
             }
