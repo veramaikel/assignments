@@ -17,7 +17,9 @@ Initially all the squares of the board are hidden **'@'**, and they are discover
 - **'*' Duplex Square:** is a space that doubles the score of the player who visits it for the first time.
 - **'.' Empty Square:** is an empty square, free or neutral, without value to add.
 - **'X' Zero Square:** reset the score of the player who visits this space for the first time.
-- **'+' Plus Square:** this square is special, when a player's path visits this square, it not only continues forward in the same direction it had but also splits to the perpendicular direction it came from. It is a bifurcation of the path where a moves arrives with a specific direction and 3 moves leave towards the remaining directions. Ex. If the path starts at box 5, 1 (column 5, row 1) going down and is on the path with a '+' in box 5, 4 (column 5, row 4) then from this box the path is divided to the left and right by row 4 and continues down the same column 5 it came from.
+- **'+' Plus Square:** this square is special, when a player's path visits this square, it not only continues forward in the same direction it had but also splits to the perpendicular direction it came from. It is a bifurcation of the path where a moves arrives with a specific direction and 3 moves leave towards the remaining directions. 
+
+Note: Example. If the path starts at space 5, 1 ``(column 5, row 1)`` going **down (&darr;)** and is on the path with a **'+'** in space 5, 4 ``(column 5, row 4)`` then from this box the path is divided to the **left (&larr;)** and **right (&rarr;)** by ``row 4`` and continues **down (&darr;)** the same ``column 5`` it came from.
 
 ### Types of Moves
 
