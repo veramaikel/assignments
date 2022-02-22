@@ -30,6 +30,11 @@ public class Game {
         this.over = over;
     }
 
+    public void reversePlay(){
+        Player P = this.getPlayer();
+        P.reversePlay(this.board);
+    }
+
     public Integer getId() {
         return id;
     }
@@ -74,8 +79,8 @@ public class Game {
         this.board = board;
     }
 
-    public void setBoard(int rows, int columns) {
-        this.board = new Board(rows, columns);
+    public void setBoard(int rows, int columns, int zeroCells) {
+        this.board = new Board(rows, columns, zeroCells);
         this.board.setId(this.id);
     }
 

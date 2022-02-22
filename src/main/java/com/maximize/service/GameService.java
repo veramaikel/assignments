@@ -91,6 +91,7 @@ public class GameService {
             }
         }
         if(inPlayers == 1) {
+            inPlayers++;
             String pName = "Maxi-bot";
             Player P = playerServ.getPlayer(pName);
             if(P==null) {
@@ -100,7 +101,7 @@ public class GameService {
             }
             G.addPlayer(P);
         }
-        G.setBoard(rows, columns);
+        G.setBoard(rows, columns, inPlayers);
         return G;
     }
 
@@ -143,7 +144,7 @@ public class GameService {
                 else if (dir == 2) direction = DirectionMove.DOWN;
                 else if (dir == 3) direction = DirectionMove.LEFT;
                 else direction = DirectionMove.RIGHT;
-                move = new Move(y - 1, x - 1, P, direction);
+                move = new Move(y - 1, x - 1, P, direction, true);
             } else { //Maxi-bot
                 move = maxibotServ.generateMove(G);
                 consoleServ.out("THE MOVE OF " + P.getName() + " IS: x=" + (move.getColumn() + 1) +
@@ -164,8 +165,17 @@ public class GameService {
     }
 
     public Game afterMove(Game G){
-        if(G.getBoard().getPositiveCells()>0 && !G.isOver()){
-            G.nextPlayer();
+        if((G.getBoard().getPositiveCells()>0 || G.getBoard().getZeroCells()>0) && !G.isOver()){
+            List<String> list = new ArrayList<>(2);
+            list.add("Continue Game");
+            list.add("Reverse the Play");
+            int opt = consoleServ.getIntByList("Select Option to continue: ", list, null);
+            if (opt == 2){
+                G.reversePlay();
+            }
+            else {
+                G.nextPlayer();
+            }
             return G;
         }
         else {

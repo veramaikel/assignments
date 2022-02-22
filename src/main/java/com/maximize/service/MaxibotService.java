@@ -13,9 +13,7 @@ public class MaxibotService {
     public Move generateMove(Game G){
         Move move = null;
         Board B = G.getBoard();
-       /* int total = B.getRows()*B.getColumns();
-        int[] spaces = new int[total];
-        DirectionMove[] dirs = {DirectionMove.UP, DirectionMove.LEFT, DirectionMove.DOWN, DirectionMove.RIGHT};*/
+
         int maxRow = -1, row = -1;
         int maxCol = -1, col = -1;
         for (int i = 0; i < B.getRows(); i++) {
@@ -35,7 +33,7 @@ public class MaxibotService {
             if(maxCol>maxRow){
                 for (int i = 0; i < B.getRows(); i++) {
                     if(!B.getType(i, col).equals(CellType.STOP)){
-                        move = new Move(i,col,G.getPlayer(),DirectionMove.DOWN);
+                        move = new Move(i,col,G.getPlayer(),DirectionMove.DOWN, true);
                         break;
                     }
                     else maxCol--;
@@ -44,7 +42,7 @@ public class MaxibotService {
             else{
                 for (int i = 0; i < B.getColumns(); i++) {
                     if(!B.getType(row, i).equals(CellType.STOP)){
-                        move = new Move(row,i,G.getPlayer(),DirectionMove.RIGHT);
+                        move = new Move(row,i,G.getPlayer(),DirectionMove.RIGHT, true);
                         break;
                     }
                     else maxRow--;

@@ -27,9 +27,15 @@ public class Player {
         moves.push(move);
     }
 
-    public Move reverseMove(){
-        //Move move =
-        return moves.pop();
+    public void reversePlay(Board B){
+        if(!moves.empty()) {
+            Move move;
+            do {
+                move = moves.pop();
+                this.points = this.points - move.getPoints();
+                B.setHiddenCell(move.getRow(), move.getColumn(), true);
+            }while(!move.isFirst());
+        }
     }
 
     public int getPoints() {

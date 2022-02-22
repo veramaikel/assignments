@@ -9,32 +9,29 @@ public class Board {
     private Integer id;
     private Cell[][] matrix;
     private int rows, columns;
-    private MaximizeStack<Cell[][]> changes;
-    private static boolean hasChanged;
     private int[] hiddenR;
     private int[] hiddenC;
     private int positiveCells;
+    private int zeroCells;
 
-    public Board(int rows, int columns){ this(rows, columns, null, null); }
+    public Board(int rows, int columns, int zeroCells){ this(rows, columns, zeroCells,null, null); }
 
-    public Board(int id, String matrixTex){ this(0, 0, id, matrixTex); }
+    public Board(int id, String matrixTex){ this(0, 0, 0, id, matrixTex); }
 
-    private Board(int rows, int columns, Integer id, String matrixTex){
+    private Board(int rows, int columns, int zeroCells, Integer id, String matrixTex){
         this.rows = Math.min(rows, MAX_DIM);
         this.columns = Math.min(columns, MAX_DIM);
         this.id = id;
-        this.changes = new MaximizeStack<>();
         this.hiddenC = new int[this.columns];
         this.hiddenR = new int[this.rows];
         this.positiveCells = 0;
         if(matrixTex==null){
             this.matrix = new Cell[this.rows][this.columns];
-            generate();
+            generate(zeroCells);
         }
         else{
             unwrapper(matrixTex);
         }
-        hasChanged = false;
     }
 
     private void unwrapper(String matrixTex) {
@@ -74,6 +71,7 @@ public class Board {
                     if(isHidden) this.positiveCells++;
                 } else if (CellType.ZERO.getValue() == type) {
                     cell.setType(CellType.ZERO);
+                    if(isHidden) this.zeroCells++;
                 } else if (CellType.PLUS.getValue() == type) {
                     cell.setType(CellType.PLUS);
                 }
@@ -99,21 +97,20 @@ public class Board {
         return wmatrix.toString();
     }
 
-    private void generate() {
+    private void generate(int zeroCells) {
         int total = rows*columns;
         int points = total*30/100;
         int duplex = total*10/100;
         int stops = total*7/100;
         int plus = total*10/100;
-        int zero = Game.MAX_PLAYERS;
-        int empty = total - (points+duplex+stops+plus+zero);
+        int empty = total - (points+duplex+stops+plus+zeroCells);
 
         int[] cells = new int[total];
         for (int i = 0; i < total; i++) {
             cells[i] = 1;
         }
 
-        int[] density = {empty/8, points/3, 0, zero, 0, duplex, 0, 0, 0, stops, 0, plus, 0, 0, 0};
+        int[] density = {empty/8, points/3, 0, zeroCells, 0, duplex, 0, 0, 0, stops, 0, plus, 0, 0, 0};
         empty = empty - density[0];
         points = points - density[1];
         density[2] = empty/7;
@@ -196,37 +193,37 @@ public class Board {
 
     public void play(Move move){
         path(move);
-        if(hasChanged){
-            changes.push(this.matrix);
-            hasChanged = false;
-        }
     }
 
     private void path(Move move) {
         if(isInside(move)) {
             Cell cell = this.matrix[move.getRow()][move.getColumn()];
+            Player P = move.getPlayer();
             CellType type = cell.getType();
             boolean hidden = cell.isHidden();
             if(hidden) {
                 this.hiddenC[cell.getColumn()]--;
                 this.hiddenR[cell.getRow()]--;
-            }
-            cell.setHidden(false);
-            this.matrix[move.getRow()][move.getColumn()] = cell;
-            hasChanged = true;
-            Player P = move.getPlayer();
-            if (!type.equals(CellType.STOP)) {
                 P.addMove(move);
+            }
+            this.matrix[move.getRow()][move.getColumn()].setHidden(false);
+            if (!type.equals(CellType.STOP)) {
                 if (hidden) {
                     if (type.equals(CellType.POINT)){
                         P.addPoints(1);
+                        move.addPoints(1);
                         this.positiveCells--;
                     }
                     else if (type.equals(CellType.DUPLEX)){
+                        move.addPoints(P.getPoints());
                         P.duplexPoints();
                         this.positiveCells--;
                     }
-                    else if (type.equals(CellType.ZERO)) P.resetPoints();
+                    else if (type.equals(CellType.ZERO)){
+                        move.addPoints(P.getPoints()*-1);
+                        this.zeroCells--;
+                        P.resetPoints();
+                    }
                     else if (type.equals(CellType.PLUS)){
                         path(move.turn90());
                         path(move.turn270());
@@ -245,9 +242,17 @@ public class Board {
         return (move.getRow()<rows && move.getRow()>=0 && move.getColumn()<columns && move.getColumn()>=0);
     }
 
-
-    public void reverse(){
-        if(!changes.empty()) { this.matrix = changes.pop();}
+    public void setHiddenCell(int row, int column, boolean hidden){
+        this.matrix[row][column].setHidden(hidden);
+        if(hidden){
+            CellType type = this.matrix[row][column].getType();
+            this.hiddenC[column]++;
+            this.hiddenR[row]++;
+            if (type.equals(CellType.POINT) || type.equals(CellType.DUPLEX)){
+                this.positiveCells++;
+            }
+            else if (type.equals(CellType.ZERO)) this.zeroCells++;
+        }
     }
 
     public Integer getId() {
@@ -284,6 +289,10 @@ public class Board {
 
     public int getPositiveCells() {
         return positiveCells;
+    }
+
+    public int getZeroCells(){
+        return this.zeroCells;
     }
 
     public CellType getType(int row, int column){
