@@ -79,7 +79,8 @@ public class Player {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Player player)) return false;
-        return id.equals(player.id) && name.equals(player.name);
+        if (id == null)  return name.equals(player.name);
+        else return id.equals(player.id) && name.equals(player.name);
     }
 
     @Override

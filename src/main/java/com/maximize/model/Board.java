@@ -1,6 +1,5 @@
 package com.maximize.model;
 
-import com.maximize.util.MaximizeStack;
 import org.apache.log4j.Logger;
 
 public class Board {
@@ -34,7 +33,7 @@ public class Board {
         }
     }
 
-    private void unwrapper(String matrixTex) {
+    public void unwrapper(String matrixTex) {
         String[] wrows = matrixTex.split(String.valueOf(CellWrapper.SPLIT.getValue()));
         this.rows = wrows.length;
         for (int i = 0; i < wrows.length; i++) {
@@ -191,11 +190,7 @@ public class Board {
         System.out.println(s);
     }
 
-    public void play(Move move){
-        path(move);
-    }
-
-    private void path(Move move) {
+    public void play(Move move) {
         if(isInside(move)) {
             Cell cell = this.matrix[move.getRow()][move.getColumn()];
             Player P = move.getPlayer();
@@ -225,12 +220,12 @@ public class Board {
                         P.resetPoints();
                     }
                     else if (type.equals(CellType.PLUS)){
-                        path(move.turn90());
-                        path(move.turn270());
+                        play(move.turn90());
+                        play(move.turn270());
                     }
                 }
                 move.setPlayer(P);
-                path(move.ahead());
+                play(move.ahead());
             }
         }
         else {
@@ -243,15 +238,18 @@ public class Board {
     }
 
     public void setHiddenCell(int row, int column, boolean hidden){
+        Cell cell = this.matrix[row][column];
+        CellType type = cell.getType();
+        boolean actualHidden = cell.isHidden();
         this.matrix[row][column].setHidden(hidden);
-        if(hidden){
-            CellType type = this.matrix[row][column].getType();
-            this.hiddenC[column]++;
-            this.hiddenR[row]++;
-            if (type.equals(CellType.POINT) || type.equals(CellType.DUPLEX)){
-                this.positiveCells++;
-            }
-            else if (type.equals(CellType.ZERO)) this.zeroCells++;
+        if(hidden!=actualHidden){
+            int add = 1;
+            if(!hidden) add = -1;
+            this.hiddenC[column] += add;
+            this.hiddenR[row] += add;
+            if (type.equals(CellType.POINT) || type.equals(CellType.DUPLEX)) {
+                this.positiveCells += add;
+            } else if (type.equals(CellType.ZERO)) this.zeroCells += add;
         }
     }
 
