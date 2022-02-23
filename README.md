@@ -71,17 +71,19 @@ All moves are in a straight line, either across a **column** (vertical) in an **
 >```
 >  The path of the example. This is how the board looks after the move
 >   
->   y     
->   1   @ @ @ @ @ @ @ @ @  .  @  @  @  @
->   2   @ @ @ @ @ @ @ @ @  .  @  @  @  @
->   3   @ @ @ @ @ @ @ @ @  .  @  @  @  @
->   4   @ @ @ @ @ @ @ @ @  .  @  @  @  @
->   5   @ # O O . . O * .  +  .  .  .  .
->   6   @ @ @ @ @ @ @ @ @  .  @  @  @  @
->   7   @ @ @ @ @ @ @ @ @  O  @  @  @  @
->   8   @ @ @ @ @ @ @ @ @  .  @  @  @  @
->   
->       1 2 3 4 5 6 7 8 9 10 11 12 13 14 x
+>            y                      ↓start of the move
+>            1   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
+>            2   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
+>            3   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
+>            4   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
+>            5   @ # O O . . O * . +↓ .  .  .  .
+>  end on the left | ← ← ← ← ← ← ← ↔↓ →  →  →  → end on the right
+>            6   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
+>            7   @ @ @ @ @ @ @ @ @ O↓ @  @  @  @
+>            8   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
+>                                   end of the move
+>
+>                1 2 3 4 5 6 7 8 9 10 11 12 13 14 x
 >```
 
 
