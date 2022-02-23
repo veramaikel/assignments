@@ -154,7 +154,7 @@ public class GameService {
                 consoleServ.out("THE MOVE OF " + P.getName() + " IS: x=" + (move.getColumn() + 1) +
                         ", y=" + (move.getRow() + 1) + ", direction:" + move.getDirection(), 1);
             }
-
+            log.info(P.getName()+" Move: "+move.toString());
             G.getBoard().play(move);
             G.setPlayer(P);
             int diffPoints = P.getPoints() - points;
@@ -164,6 +164,7 @@ public class GameService {
                 consoleServ.out("SORRY, YOU LOST " + diffPoints + " POINTS", 1);
             } else consoleServ.out("YOU HAVE THE SAME AMOUNT OF POINTS", 1);
             consoleServ.outInLine("WITH " + (P.getActualMoves() - moves) + " MOVES", "");
+            log.info(P.getName()+" Moves: "+(P.getActualMoves() - moves)+", Points: "+diffPoints);
         }
         return G;
     }
@@ -179,6 +180,7 @@ public class GameService {
             }
             if (opt == 2){
                 G.reversePlay();
+                log.info(G.getPlayer().getName()+" Reverse Play");
             }
             else {
                 G.nextPlayer();
@@ -198,6 +200,7 @@ public class GameService {
             }
             consoleServ.out("THE WINNER IS -------------   ",1);
             consoleServ.outInLine(win.getName(),"**");
+            log.info(win.getName()+" IS THE WINNER WITH "+win.getPoints()+" POINTS");
             consoleServ.out("=",70);
             consoleServ.out("",1);
             G.getBoard().print(false);
