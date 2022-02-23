@@ -18,10 +18,14 @@ public class GameService {
     private final MaxibotService maxibotServ;
 
     public GameService(){
-        dao = new GameDao();
-        consoleServ = new ConsoleService();
-        playerServ = new PlayerService();
-        maxibotServ = new MaxibotService();
+        this(new GameDao(), new PlayerService(), new ConsoleService(), new MaxibotService());
+    }
+
+    public GameService(GameDao dao, PlayerService playerServ, ConsoleService consoleServ, MaxibotService maxibotServ){
+        this.dao = dao;
+        this.consoleServ = consoleServ;
+        this.playerServ = playerServ;
+        this.maxibotServ = maxibotServ;
     }
 
     public List<Game> getAllGames() {

@@ -12,7 +12,10 @@ public class PlayerService {
     private PlayerDao dao;
 
     public PlayerService(){
-        dao = new PlayerDao();
+        this(new PlayerDao());
+    }
+    public PlayerService(PlayerDao dao){
+        this.dao = dao;
     }
 
     public List<Player> getAllPlayers() {

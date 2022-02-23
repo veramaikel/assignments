@@ -12,7 +12,10 @@ public class ConsoleService {
     private final Scanner scanner;
 
     public ConsoleService(){
-        scanner = new Scanner(System.in);
+        this(new Scanner(System.in));
+    }
+    public ConsoleService(Scanner scanner){
+        this.scanner = scanner;
     }
 
     public void out(String msg, int times){

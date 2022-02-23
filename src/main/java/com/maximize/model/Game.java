@@ -4,13 +4,14 @@ import com.maximize.util.MaximizeLinkedList;
 import org.apache.log4j.Logger;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Game {
     private static final Logger log = Logger.getLogger(Game.class);
     public static final int MAX_PLAYERS = 3;
     private Integer id;
     private String name;
-    private final Date star;
+    private final Date start;
     private Date update;
     private Board board;
     private MaximizeLinkedList<Player> players;
@@ -20,10 +21,10 @@ public class Game {
         this(name, null, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()),false);
     }
 
-    public Game(String name, Integer id, Date star, Date update, boolean over){
+    public Game(String name, Integer id, Date start, Date update, boolean over){
         this.name = name;
         this.id = id;
-        this.star = star;
+        this.start = start;
         this.update = update;
         players = new MaximizeLinkedList<>();
         board = null;
@@ -51,8 +52,8 @@ public class Game {
         this.name = name;
     }
 
-    public Date getStar() {
-        return star;
+    public Date getStart() {
+        return start;
     }
 
     public boolean isOver() {
@@ -130,10 +131,23 @@ public class Game {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Game)) return false;
+        Game game = (Game) o;
+        return over == game.over && Objects.equals(id, game.id) && name.equals(game.name) && start.equals(game.start);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, start, over);
+    }
+
+    @Override
     public String toString() {
         return "Game{" +
                 "name(id)=" +name+ "("+ id + ")"+
-                ", star=" + star +
+                ", start=" + start +
                 ", update=" + update +
                 ", over=" + over +
                 ", board=" + board +

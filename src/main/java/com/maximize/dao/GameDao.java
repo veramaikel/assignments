@@ -16,7 +16,10 @@ public class GameDao {
     private final Connection conn;
 
     public GameDao(){
-        conn = ConnectionUtil.getConnection();
+        this(ConnectionUtil.getConnection());
+    }
+    public GameDao(Connection conn){
+        this.conn = conn;
     }
 
     public List<Game> getAllGames() throws SQLException {
@@ -38,7 +41,7 @@ public class GameDao {
         PreparedStatement statement = conn.prepareStatement("Select * From Game Where id = ?");
         statement.setInt(1, id);
         ResultSet rs = statement.executeQuery();
-        while(rs.next()){
+        if(rs.next()){
             myGame = new Game(rs.getString("name"),rs.getInt("id"),
                     rs.getDate("start_date"), rs.getDate("update_date"),
                     rs.getBoolean("gameover"));
@@ -56,7 +59,7 @@ public class GameDao {
         PreparedStatement statement = conn.prepareStatement("Select * From Game Where name = ?");
         statement.setString(1, name);
         ResultSet rs = statement.executeQuery();
-        while(rs.next()){
+       if(rs.next()){
             myGame = new Game(rs.getString("name"),rs.getInt("id"),
                     rs.getDate("start_date"), rs.getDate("update_date"),
                     rs.getBoolean("gameover"));
@@ -76,7 +79,7 @@ public class GameDao {
                         "(?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
         int parameterIndex = 0;
         statement.setString(++parameterIndex, G.getName());
-        statement.setDate(++parameterIndex, G.getStar());
+        statement.setDate(++parameterIndex, G.getStart());
         statement.setDate(++parameterIndex, G.getUpdate());
         statement.setBoolean(++parameterIndex, G.isOver());
         conn.setAutoCommit(false);

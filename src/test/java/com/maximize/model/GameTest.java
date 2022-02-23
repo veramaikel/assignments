@@ -55,9 +55,9 @@ public class GameTest {
     }
 
     @Test
-    void GameGetStarTest() {
+    void GameGetStartTest() {
         Date date = new Date(System.currentTimeMillis());
-        assertEquals(date.toString(), game.getStar().toString());
+        assertEquals(date.toString(), game.getStart().toString());
     }
 
     @Test
