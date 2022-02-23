@@ -38,11 +38,11 @@ class GameServiceTest {
         Date now = new Date(System.currentTimeMillis());
         mockGDao = Mockito.mock(GameDao.class);
         mockPDao = Mockito.mock(PlayerDao.class);
-        mockScanner = Mockito.mock(Scanner.class);
+        //mockScanner = Mockito.mock(Scanner.class);
         maxiMockService = Mockito.mock(MaxibotService.class);
 
 
-        cService = new ConsoleService(mockScanner);
+        cService = new ConsoleService();
         pService = new PlayerService(mockPDao);
         gService = new GameService(mockGDao, pService, cService, maxiMockService);
 

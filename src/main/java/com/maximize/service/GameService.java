@@ -154,7 +154,7 @@ public class GameService {
                 consoleServ.out("THE MOVE OF " + P.getName() + " IS: x=" + (move.getColumn() + 1) +
                         ", y=" + (move.getRow() + 1) + ", direction:" + move.getDirection(), 1);
             }
-            log.info(P.getName()+" Move: "+move.toString());
+            log.info(P.getName()+" Move: "+move);
             G.getBoard().play(move);
             G.setPlayer(P);
             int diffPoints = P.getPoints() - points;
@@ -176,14 +176,20 @@ public class GameService {
                 List<String> list = new ArrayList<>(2);
                 list.add("Continue Game");
                 list.add("Reverse the Play");
+                list.add("Finish Later");
                 opt = consoleServ.getIntByList("Select Option to continue: ", list, null);
             }
             if (opt == 2){
                 G.reversePlay();
                 log.info(G.getPlayer().getName()+" Reverse Play");
             }
+            else if(opt == 1){
+                G.nextPlayer();
+            }
             else {
                 G.nextPlayer();
+                addOrUpdateGame(G);
+                return null;
             }
             return G;
         }
