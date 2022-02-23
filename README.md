@@ -165,12 +165,13 @@ You can load a game from the Database. A game started earlier but not finished t
 
 3. The path begins by visiting each square that is in the chosen direction. Path in that direction ends with a **Stop Square '#'** or when the board runs out.
 4. Each space visited for the first time will be uncovered for the rest of the game. The tour can continue in all directions if a **Plus Square '+'** is visited for the first time. 
-5. After each move, the player in turn has the option to reverse it and start over from step 1 or continue the game with the next player.
+5. After each move, the player in turn has the option to reverse it and start over from step 1, continue the game with the next player or finish the game later.
 ```
   EXCELLENT MOVE, YOU INCREASED 15 POINTS  WITH 28 MOVES 
 	1.Continue Game
 	2.Reverse the Play
-	Select Option to continue:  (1-2)  |
+	3.Finish Later
+	Select Option to continue:  (1-3)  |
 ```
 
 6. After each play the scoreboard is updated, the game changes are saved in the Database and the next player starts to play. This cycle is repeated until all the sqares are visited. One player per turn.
