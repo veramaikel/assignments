@@ -77,7 +77,7 @@ All moves are in a straight line, either across a **column** (vertical) in an **
 >            3   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
 >            4   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
 >            5   @ # O O . . O * . +↓ .  .  .  .
->  end on the left | ← ← ← ← ← ← ← ↔↓ →  →  →  → end on the right
+>  end on the left | ←  ←  ←  ←  ←  ↓ →   →   → end on the right
 >            6   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
 >            7   @ @ @ @ @ @ @ @ @ O↓ @  @  @  @
 >            8   @ @ @ @ @ @ @ @ @ .↓ @  @  @  @
