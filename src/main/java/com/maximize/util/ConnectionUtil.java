@@ -16,7 +16,7 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            FileInputStream propertiesInput = new FileInputStream("D:\\Coding\\Revature\\sql.properties");
+            FileInputStream propertiesInput = new FileInputStream("..\\sql.properties");
 
             Properties props = new Properties();
             props.load(propertiesInput);

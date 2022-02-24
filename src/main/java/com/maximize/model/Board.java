@@ -228,9 +228,6 @@ public class Board {
                 play(move.ahead());
             }
         }
-        else {
-            log.debug("Invalid Move out of Board: "+move);
-        }
     }
 
     public boolean isInside(Move move){
