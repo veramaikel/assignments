@@ -58,9 +58,9 @@ All moves are in a straight line, either across a **column** (vertical) in an **
 - **'*' Duplex Square:** is a space that doubles the score of the player who visits it for the first time.
 - **'.' Empty Square:** is an empty square, free or neutral, without value to add.
 - **'X' Zero Square:** reset the score of the player who visits this space for the first time.
-- **'+' Plus Square:** this square is special, when a player's path visits this square, it not only continues forward in the same direction it came from, but also splits sideways. It is a split in the road where one move arrives with a specific direction and 3 moves leave towards the remaining directions. 
+- **'+' Split Square:** this square is special, when a player's path visits this square, it not only continues forward in the same direction it came from, but also splits sideways. It is a split in the road where one move arrives with a specific direction and 3 moves leave towards the remaining directions. 
 
- > **Example:** Taking the ``8 x 14`` board above as the base of the example. The player in turn has 10 points in his score and chooses the box 10, 1 ``(column 10, row 1)`` to start his path with direction **down (&darr;)**. The first 4 cells of the path are **empty '.'**, in square 10, 5 ``(column 10, row 5)`` meets a **plus square '+'** then from this place the path splits **left (&larr;)** and **right (&rarr;)** by ``row 5 `` and continues **down (&darr;)** by the same ``column 5`` where it came from.
+ > **Example:** Taking the ``8 x 14`` board above as the base of the example. The player in turn has 10 points in his score and chooses the box 10, 1 ``(column 10, row 1)`` to start his path with direction **down (&darr;)**. The first 4 cells of the path are **empty '.'**, in square 10, 5 ``(column 10, row 5)`` meets a **split square '+'** then from this place the path splits **left (&larr;)** and **right (&rarr;)** by ``row 5 `` and continues **down (&darr;)** by the same ``column 5`` where it came from.
 >
 > The new path that is generated to the **right (&rarr;)** does not add points since there are 4 **empty spaces '.'**.
 >
@@ -164,7 +164,7 @@ You can load a game from the Database. A game started earlier but not finished t
 ```
 
 3. The path begins by visiting each square that is in the chosen direction. Path in that direction ends with a **Stop Square '#'** or when the board runs out.
-4. Each space visited for the first time will be uncovered for the rest of the game. The tour can continue in all directions if a **Plus Square '+'** is visited for the first time. 
+4. Each space visited for the first time will be uncovered for the rest of the game. The tour can continue in all directions if a **Split Square '+'** is visited for the first time. 
 5. After each move, the player in turn has the option to reverse it and start over from step 1, continue the game with the next player or finish the game later.
 ```
   EXCELLENT MOVE, YOU INCREASED 15 POINTS  WITH 28 MOVES 
