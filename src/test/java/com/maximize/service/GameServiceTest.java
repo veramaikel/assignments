@@ -11,8 +11,6 @@ import org.mockito.Mockito;
 import java.sql.*;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GameServiceTest {
 

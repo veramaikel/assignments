@@ -1,6 +1,5 @@
 package com.maximize.dao;
 
-import com.maximize.model.Board;
 import com.maximize.model.Game;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
